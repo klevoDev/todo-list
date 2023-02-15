@@ -1,33 +1,72 @@
-import React, { FC } from 'react'
+import React, { ChangeEvent, KeyboardEvent, FC, useState } from 'react'
 
-import { CONTENT, HEADING } from './todos-constants'
-import { TodosTypeProps } from './todos-types'
+import { CONTENT, EMPTY_STRING } from './todos-constants'
+import { FilterType, TodosPropsType } from './todos-types'
 
 import styles from './todos.module.css'
 
-export const TodosComponent: FC<TodosTypeProps> = (props) => {
-	const todosItem = props.todosItem.map((el) => {
+export const TodosComponent: FC<TodosPropsType> = ({
+	addTask,
+	todosItem,
+	heading,
+	changeFilter
+}) => {
+	const todoList = todosItem.map((task) => {
 		return (
-			<div key={el.id}>
-				<h1>{HEADING}</h1>
-				<div className={styles.WrapInput}>
-					<input type='text' />
-					<button>{CONTENT.CREATE}</button>
-				</div>
-				<div className={styles.WrapCheckBox}>
-					<label>
-						<input type='checkbox' />
-						{el.title}
-					</label>
-				</div>
-				<div className={styles.WrapButtons}>
-					<button>{CONTENT.ALL}</button>
-					<button>{CONTENT.COMPLETED}</button>
-					<button>{CONTENT.ACTIVE}</button>
-				</div>
-			</div>
+			<li key={task.id}>
+				<label>
+					<input type='checkbox' checked={task.isDone} />
+					{task.title}
+				</label>
+			</li>
 		)
 	})
 
-	return <div className={styles.WrapCard}>{todosItem}</div>
+	const onClickFilterHandler = (filter: FilterType) => {
+		changeFilter(filter)
+	}
+
+	const [value, setValue] = useState(EMPTY_STRING)
+	const onChangeValueHandler = (event: ChangeEvent<HTMLInputElement>) => {
+		setValue(event.currentTarget.value)
+	}
+	const addTaskHandler = () => {
+		addTask(value)
+		setValue(EMPTY_STRING)
+	}
+
+	const onEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === 'Enter') {
+			addTaskHandler()
+		}
+	}
+
+	return (
+		<div className={styles.WrapCard}>
+			<h1>{heading}</h1>
+			<div className={styles.WrapInput}>
+				<input
+					type='text'
+					value={value}
+					onChange={onChangeValueHandler}
+					onKeyDown={onEnterHandler}
+				/>
+				<button onClick={addTaskHandler}>
+					<span>{CONTENT.CREATE}</span>
+				</button>
+			</div>
+			<ul className={styles.WrapCheckBox}>{todoList}</ul>
+			<div className={styles.WrapButtons}>
+				<button onClick={() => onClickFilterHandler('all')}>
+					{CONTENT.ALL}
+				</button>
+				<button onClick={() => onClickFilterHandler('completed')}>
+					{CONTENT.COMPLETED}
+				</button>
+				<button onClick={() => onClickFilterHandler('active')}>
+					{CONTENT.ACTIVE}
+				</button>
+			</div>
+		</div>
+	)
 }
