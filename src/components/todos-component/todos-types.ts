@@ -5,10 +5,11 @@ export type TodosType = {
 }
 
 export type TodosPropsType = {
-	todosItem: TodosType[]
-	heading: string
-	changeFilter: (filter: FilterType) => void
 	addTask: (title: string) => void
+	changeFilter: (filter: FilterType) => void
+	deleteTask: (id: number) => void
+	heading: string
+	todosItem: TodosType[]
 }
 
 export type FilterType = 'all' | 'active' | 'completed'
