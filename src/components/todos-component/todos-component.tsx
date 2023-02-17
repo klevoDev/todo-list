@@ -7,17 +7,28 @@ import styles from './todos.module.css'
 
 export const TodosComponent: FC<TodosPropsType> = ({
 	addTask,
-	todosItem,
+	changeFilter,
+	deleteTask,
 	heading,
-	changeFilter
+	todosItem
 }) => {
+	// const onDeleteHandler = (id: number) => {
+	// 	console.log(id)
+	// }
+
 	const todoList = todosItem.map((task) => {
+		const onDeleteHandler = () => {
+			deleteTask(task.id)
+		}
+
 		return (
 			<li key={task.id}>
 				<label>
 					<input type='checkbox' checked={task.isDone} />
 					{task.title}
-				</label>
+				</label>{' '}
+				<button onClick={onDeleteHandler}>X</button>
+				{/*<button onClick={(e) => onDeleteHandler(task.id)}>X</button>*/}
 			</li>
 		)
 	})

@@ -11,7 +11,12 @@ function App() {
 
 	const addTask = (title: string) => {
 		const id = new Date().getTime()
-		const newTasks = [{ id, title, isDone: false }, ...tasks] // CRUD -> CREATE
+		const newTasks = [{ id, title, isDone: false }, ...tasks]
+		setTasks(newTasks)
+	}
+
+	const deleteTask = (id: number) => {
+		const newTasks = tasks.filter((task) => task.id !== id)
 		setTasks(newTasks)
 	}
 
@@ -29,6 +34,7 @@ function App() {
 	return (
 		<div className='App'>
 			<Todos
+				deleteTask={deleteTask}
 				todosItem={filteredTasks}
 				heading={todolistData.heading}
 				changeFilter={changeFilter}
