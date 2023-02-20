@@ -7,15 +7,24 @@ import styles from './todos.module.css'
 
 export const TodosComponent: FC<TodosPropsType> = ({
 	addTask,
-	todosItem,
+	changeFilter,
+	changeStatusTask,
 	heading,
-	changeFilter
+	todosItem
 }) => {
 	const todoList = todosItem.map((task) => {
+		const onChangeStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
+			changeStatusTask(task.id, event.currentTarget.checked)
+		}
+
 		return (
 			<li key={task.id}>
 				<label>
-					<input type='checkbox' checked={task.isDone} />
+					<input
+						type='checkbox'
+						checked={task.isDone}
+						onChange={onChangeStatusHandler}
+					/>
 					{task.title}
 				</label>
 			</li>

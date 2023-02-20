@@ -5,6 +5,7 @@ export type TodosType = {
 }
 
 export type TodosPropsType = {
+	changeStatusTask: (id: number, isDone: boolean) => void
 	todosItem: TodosType[]
 	heading: string
 	changeFilter: (filter: FilterType) => void

@@ -9,6 +9,13 @@ function App() {
 	const [filter, setFilter] = useState<FilterType>('all')
 	const [tasks, setTasks] = useState<TodosType[]>(todolistData.tasks)
 
+	const changeStatusTask = (id: number, isDone: boolean) => {
+		const newTasks = tasks.map((task) =>
+			task.id === id ? { ...task, isDone } : task
+		)
+		setTasks(newTasks)
+	}
+
 	const addTask = (title: string) => {
 		const id = new Date().getTime()
 		const newTasks = [{ id, title, isDone: false }, ...tasks] // CRUD -> CREATE
@@ -32,6 +39,7 @@ function App() {
 				todosItem={filteredTasks}
 				heading={todolistData.heading}
 				changeFilter={changeFilter}
+				changeStatusTask={changeStatusTask}
 				addTask={addTask}
 			/>
 		</div>
